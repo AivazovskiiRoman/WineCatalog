@@ -1,5 +1,4 @@
-﻿using System.Web;
-using System.Web.Optimization;
+﻿using System.Web.Optimization;
 
 namespace WineCatalog
 {
@@ -10,6 +9,19 @@ namespace WineCatalog
         {
             bundles.Add(new ScriptBundle("~/bundles/jquery").Include(
                         "~/Scripts/jquery-{version}.js"));
+
+            bundles.Add(new ScriptBundle("~/bundles/angularjs").Include(
+                        "~/Scripts/angular.min.js"
+                        ));
+
+            bundles.Add(new ScriptBundle("~/bundles/angularextra").Include(
+                        "~/Scripts/angular-ui-router.min.js",
+                        "~/Scripts/angular-ui/ui-bootstrap.min.js",
+                        "~/Scripts/angular-ui/ui-bootstrap-tpls.min.js"
+                        ));
+
+            bundles.Add(new ScriptBundle("~/bundles/AngularCustom").IncludeDirectory(
+                        "~/ScriptsApp/", "*.js", true));
 
             // Use the development version of Modernizr to develop with and learn from. Then, when you're
             // ready for production, use the build tool at http://modernizr.com to pick only the tests you need.

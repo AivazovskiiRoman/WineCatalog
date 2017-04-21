@@ -1,5 +1,4 @@
-﻿using System.Collections.Generic;
-using System.Linq;
+﻿using System.Linq;
 using System.Web;
 using System.Web.Mvc;
 using WineCatalog.EF;
@@ -9,12 +8,19 @@ namespace WineCatalog.Controllers
 {
     public class HomeController : Controller
     {
-
-        // GET: Wine
         public ActionResult Index()
         {
-            ViewBag.Title = "Wine Catalog";
+            return View();
+        }
 
+        // GET: Wine
+        public ActionResult Wine()
+        {
+            return PartialView();
+        }
+
+        public ActionResult WineVM()
+        {
             var model = new WineIndexVM();
 
             using (var db = new WineContext())
@@ -22,15 +28,15 @@ namespace WineCatalog.Controllers
                 model.Wines = db.Wines.ToList();
             }
 
-            return View(model);
+            return Json(model, JsonRequestBehavior.AllowGet);
         }
 
         public ActionResult Edit(int? id)
         {
-            Wine wine = null;
-
             using (var db = new WineContext())
             {
+                Wine wine = null;
+
                 if (id.HasValue)
                 {
                     wine = db.Wines.First(w => w.Id == id.Value);
@@ -49,7 +55,7 @@ namespace WineCatalog.Controllers
                     InStock = wine.InStock
                 };
 
-                return View(model);
+                return PartialView(model);
             }
         }
 

@@ -1,0 +1,37 @@
+﻿@model WineCatalog.Models.WineIndexVM
+
+<div class="row">
+    <div class="col-md-12">
+        <h2>Wine catalog</h2>
+        <table class="table table-striped">
+            <thead>
+                <tr>
+                    <th>Name</th>
+                    <th>Color</th>
+                    <th>Price</th>
+                    <th>In stock</th>
+                    <th>Action</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr ng-repeat="wine in model.data.Wines">
+                    <td>{{wine.Name}}</td>
+                    <td>{{wine.Color}}</td>
+                    <td>{{wine.Price}}</td>
+                    <td>
+                        <div class="checkbox">
+                            <input type="checkbox" disabled="disabled" ng-model="wine.InStock" />
+                        </div>
+                    </td>
+                    <td><a href="@Url.Action("Delete", "Home")/?id={{wine.Id}}"><i class="fa fa-trash-o"></i></a></td>
+                </tr>
+                <tr ng-if="!model.data.Wines.length">
+                    <td colspan="5" class="text-center">
+                        There are no wines to display
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+        <a href="@Url.Action("Edit", "Home")" class="btn btn-success">Add wine</a>
+    </div>
+</div>
