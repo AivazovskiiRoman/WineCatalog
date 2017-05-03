@@ -37,14 +37,7 @@ namespace WineCatalog.Controllers
             {
                 Wine wine = null;
 
-                if (id.HasValue)
-                {
-                    wine = db.Wines.First(w => w.Id == id.Value);
-                }
-                else
-                {
-                    wine = new Wine();
-                }
+                wine = id.HasValue ? db.Wines.First(w => w.Id == id.Value) : new Wine();
 
                 var model = new Wine()
                 {
@@ -77,9 +70,10 @@ namespace WineCatalog.Controllers
                     db.Wines.Add(wine);
                     db.SaveChanges();
 
-                    return RedirectToAction("Index", "Home");
+                    return Json(wine, JsonRequestBehavior.AllowGet);
                 }
             }
+
             throw new HttpException(400, "There were errors in your model.");
         }
 
