@@ -2,11 +2,13 @@ angular.module('WineCatalogApp').controller('WineCtrl', [
     '$rootScope', '$scope', '$http', function ($rootScope, $scope, $http) {
 
         $rootScope.title = "Wine Catalog";
-
         $scope.model = {};
+
         $scope.states = {
-            showWineForm: false
+            showWineForm: false,
+            isAdding: false
         };
+
         $scope.new = {
             Wine: {}
         }
@@ -26,14 +28,18 @@ angular.module('WineCatalogApp').controller('WineCtrl', [
         }
 
         // add new wine
-        $scope.addWine = function() {
+        $scope.addWine = function () {
+
+            $scope.states.isAdding = true;
+
             $http({
                 method: 'POST',
                 url: '/Home/Edit',
                 data: $scope.new.Wine
-            }).then(function (response) {
+            }).then(function(response) {
                 $scope.model.Wines.push(response.data);
                 $scope.showWineForm(false);
+                $scope.states.isAdding = false;
                 $scope.new.Wine = {};
             }, function(error) {
                 console.error("Add wine error: ", error);
