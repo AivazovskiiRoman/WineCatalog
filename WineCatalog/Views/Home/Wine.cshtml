@@ -6,24 +6,25 @@
         <table class="table table-striped">
             <thead>
                 <tr>
-                    <th>Name</th>
-                    <th>Color</th>
-                    <th>Price</th>
-                    <th>In stock</th>
-                    <th>Action</th>
+                    <th class="col-xs-4">Name</th>
+                    <th class="col-xs-3">Color</th>
+                    <th class="col-xs-2 text-center">Price</th>
+                    <th class="col-xs-1 text-center">In stock</th>
+                    <th class="col-xs-2 text-center">Action</th>
                 </tr>
             </thead>
             <tbody>
                 <tr ng-repeat="wine in model.Wines">
                     <td>{{wine.Name}}</td>
                     <td>{{wine.Color}}</td>
-                    <td>{{wine.Price}}</td>
-                    <td>
-                        <div class="checkbox">
-                            <input type="checkbox" disabled="disabled" ng-model="wine.InStock" />
-                        </div>
+                    <td class="text-center">{{wine.Price}}</td>
+                    <td class="text-center">
+                        <span ng-if="wine.InStock"><i class="fa fa-check-circle-o" aria-hidden="true"></i></span>
+                        <span ng-if="!wine.InStock"><i class="fa fa-circle-o" aria-hidden="true"></i></span>
                     </td>
-                    <td><a href="@Url.Action("Delete", "Home")/?id={{wine.Id}}"><i class="fa fa-trash-o"></i></a></td>
+                    <td class="text-center">
+                        <span class="pointer" ng-click="removeModal(wine.Id, $index)"><i class="fa fa-trash-o"></i></span>
+                    </td>
                 </tr>
                 <tr ng-if="!model.Wines.length">
                     <td colspan="5" class="text-center">
@@ -40,13 +41,15 @@
                     <td>
                         <input type="number" class="form-control" placeholder="Price" ng-model="new.Wine.Price" />
                     </td>
-                    <td>
+                    <td class="text-center">
                         <div class="checkbox">
-                            <input type="checkbox" ng-model="new.Wine.InStock" /> in stock
+                            <label>
+                                <input type="checkbox" ng-model="new.Wine.InStock" /> in stock
+                            </label>
                         </div>
                     </td>
-                    <td>
-                        <button type="button" class="btn btn-primary ladda-button" ng-click="addWine()" 
+                    <td class="text-center">
+                        <button type="button" class="btn btn-success ladda-button" ng-click="addWine()" 
                                 loading-button data-style="zoom-out" spin="states.isAdding">Add</button>
                         <button type="button" class="btn btn-default" ng-click="showWineForm(false)">Cancel</button>
                     </td>

@@ -1,5 +1,5 @@
 angular.module('WineCatalogApp').controller('WineCtrl', [
-    '$rootScope', '$scope', '$http', function ($rootScope, $scope, $http) {
+    '$rootScope', '$scope', '$http', '$uibModal', function ($rootScope, $scope, $http, $uibModal) {
 
         $rootScope.title = "Wine Catalog";
         $scope.model = {};
@@ -29,7 +29,6 @@ angular.module('WineCatalogApp').controller('WineCtrl', [
 
         // add new wine
         $scope.addWine = function () {
-
             $scope.states.isAdding = true;
 
             $http({
@@ -44,6 +43,32 @@ angular.module('WineCatalogApp').controller('WineCtrl', [
             }, function(error) {
                 console.error("Add wine error: ", error);
             });
+        }
+
+        // remove wine
+        $scope.removeModal = function (id, index) {
+            $scope.header = 'Delete record';
+            $scope.body = 'Are you sure you want to delete this record?';
+
+            $scope.$uibModalInstance = $uibModal.open({
+                scope: $scope,
+                templateUrl: '/Home/ModalTemplate',
+                controller: 'ModalCtrl',
+                size: 'sm'
+            });
+
+            $scope.ok = function () {
+                $http({
+                    method: 'GET',
+                    url: 'Home/Delete/?id=' + id
+                }).then(function () {
+                    $scope.model.Wines.splice(index, 1);
+                }, function (error) {
+                    console.error("Remove wine error: ", error);
+                });
+
+                $scope.$uibModalInstance.close();
+            };
         }
     }
 ]);

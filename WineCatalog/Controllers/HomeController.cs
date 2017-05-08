@@ -92,5 +92,10 @@ namespace WineCatalog.Controllers
             return RedirectToAction("Index", "Home");
         }
 
+        public ActionResult ModalTemplate()
+        {
+            return PartialView();
+        }
+
     }
 }

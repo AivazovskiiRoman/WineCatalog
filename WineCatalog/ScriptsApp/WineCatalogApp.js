@@ -1,7 +1,7 @@
-angular.module('WineCatalogApp', ['ui.router', 'ui.bootstrap'])
+angular.module('WineCatalogApp', ['ui.router', 'ngAnimate', 'ui.bootstrap'])
     .config([
         '$stateProvider', '$urlRouterProvider', '$locationProvider', function ($stateProvider, $urlRouterProvider, $locationProvider) {
-
+            // Route
             $locationProvider.hashPrefix('');
             $urlRouterProvider.otherwise('');
 
