@@ -1,8 +1,8 @@
-angular.module('WineCatalogApp').controller('WineCtrl', [
-    '$rootScope', '$scope', '$http', '$uibModal', function ($rootScope, $scope, $http, $uibModal) {
+angular.module('WineCatalogApp').controller('WineCtrl', ['$rootScope', '$scope', '$uibModal', 'apiSrv',
+    function ($rootScope, $scope, $uibModal, apiSrv) {
 
         $rootScope.title = "Wine Catalog";
-        $scope.model = {};
+        $scope.wines = {};
 
         $scope.states = {
             showWineForm: false,
@@ -10,38 +10,37 @@ angular.module('WineCatalogApp').controller('WineCtrl', [
         };
 
         $scope.new = {
-            Wine: {}
+            wine: {}
         }
 
         // list of wines
-        $http({
-            method: 'GET',
-            url: '/Home/WineVM'
-        }).then(function (response) {
-            $scope.model = response.data;
+        apiSrv.wines.get().then(function (data) {
+            $scope.wines = data;
         }, function (error) {
             console.error("Get wines error: ", error);
         });
 
-        $scope.showWineForm = function(show) {
+        $scope.showWineForm = function (show) {
             $scope.states.showWineForm = show;
         }
 
         // add new wine
         $scope.addWine = function () {
-            $scope.states.isAdding = true;
-
-            $http({
-                method: 'POST',
-                url: '/Home/Edit',
-                data: $scope.new.Wine
-            }).then(function(response) {
-                $scope.model.Wines.push(response.data);
+            apiSrv.wines.add($scope.new.wine).then(function (data) {
+                $scope.wines.push(data);
                 $scope.showWineForm(false);
                 $scope.states.isAdding = false;
-                $scope.new.Wine = {};
-            }, function(error) {
-                console.error("Add wine error: ", error);
+                $scope.new.wine = {};
+            });
+        }
+
+        // edit wine
+        $scope.editModal = function (id, data) {
+            data.Id = id;
+            apiSrv.wines.edit(data).then(function () {
+                console.log("The record was updated.");
+            }, function (error) {
+                console.error("Edit wine error: ", error);
             });
         }
 
@@ -54,16 +53,19 @@ angular.module('WineCatalogApp').controller('WineCtrl', [
                 scope: $scope,
                 templateUrl: '/Home/ModalTemplate',
                 controller: 'ModalCtrl',
-                size: 'sm'
+                size: 'sm',
+                resolve: {
+                    function () {
+                        $scope.message = 'The record was deleted.';
+                    }
+                }
             });
 
             $scope.ok = function () {
-                $http({
-                    method: 'GET',
-                    url: 'Home/Delete/?id=' + id
-                }).then(function () {
-                    $scope.model.Wines.splice(index, 1);
-                }, function (error) {
+
+                apiSrv.wines.remove(id).then(function() {
+                    $scope.wines.splice(index, 1);
+                }, function(error) {
                     console.error("Remove wine error: ", error);
                 });
 

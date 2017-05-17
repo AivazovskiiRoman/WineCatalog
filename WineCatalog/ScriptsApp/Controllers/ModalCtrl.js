@@ -6,7 +6,7 @@
         };
 
         $uibModalInstance.result.then(function () {
-            console.log('Success!');
+            console.log($scope.message);
         }, function() {
             console.log('Modal dismissed at: ' + new Date());
         });

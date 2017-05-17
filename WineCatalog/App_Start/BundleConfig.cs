@@ -16,7 +16,10 @@ namespace WineCatalog
             bundles.Add(new ScriptBundle("~/bundles/angularextra").Include(
                         "~/Scripts/angular-ui-router.min.js",
                         "~/Scripts/angular-animate.min.js",
-                        "~/Scripts/angular-ui/ui-bootstrap-tpls.min.js"));
+                        "~/Scripts/angular-ui/ui-bootstrap-tpls.min.js",
+                        "~/Scripts/xeditable/xeditable.min.js",
+                        "~/Scripts/lodash.min.js",
+                        "~/Scripts/restangular.min.js"));
 
             bundles.Add(new ScriptBundle("~/bundles/angularcustom").IncludeDirectory(
                         "~/ScriptsApp/", "*.js", true));
@@ -36,7 +39,8 @@ namespace WineCatalog
                       "~/Content/bootstrap.min.css",
                       "~/Content/site.css",
                       "~/Content/font-awesome.min.css",
-                      "~/Content/ladda-themeless.min.css"));
+                      "~/Content/ladda-themeless.min.css",
+                      "~/Content/xeditable/xeditable.min.css"));
         }
     }
 }

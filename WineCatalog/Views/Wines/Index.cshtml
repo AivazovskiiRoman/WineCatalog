@@ -1,0 +1,86 @@
+﻿@model WineCatalog.Models.WineVM
+
+<div class="row">
+    <div class="col-md-12">
+        <h2>Wine catalog</h2>
+        <table class="table table-striped">
+            <thead>
+                <tr>
+                    <th class="col-xs-4">Name</th>
+                    <th class="col-xs-3">Color</th>
+                    <th class="col-xs-2 text-center">Price</th>
+                    <th class="col-xs-1 text-center">In stock</th>
+                    <th class="col-xs-2 text-center">Action</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr ng-repeat="wine in wines">
+                    <td>
+                        <span e-name="name" e-form="editMode" editable-text="wine.Name" onbeforesave="checkName($data, wine.Id)">{{ wine.Name || 'empty' }}</span>
+                    </td>
+                    <td>
+                        <span e-name="color" e-form="editMode" editable-text="wine.Color">{{ wine.Color || 'empty' }}</span>
+                    </td>
+                    <td class="text-center">
+                        <span e-name="price" e-form="editMode" editable-number="wine.Price">{{ wine.Price || 'empty' }}</span>
+                    </td>
+                    <td class="text-center">
+                        <span e-name="inStock" e-form="editMode" editable-checkbox="wine.InStock" e-title="in stock">
+                            <i class="fa fa-check-circle-o" aria-hidden="true" ng-if="wine.InStock"></i>
+                            <i class="fa fa-circle-o" aria-hidden="true" ng-if="!wine.InStock"></i>
+                        </span>
+                    </td>
+                    <td class="text-center">
+                        <form editable-form name="editMode" onbeforesave="editModal(wine.Id, $data)"
+                              ng-show="editMode.$visible" class="form-buttons form-inline" shown="inserted == wine">
+                            <button type="submit" ng-disabled="editMode.$waiting" class="btn-clear text-success">
+                                <i class="fa fa-check" aria-hidden="true"></i>&nbsp;
+                            </button>
+                            <button type="button" ng-disabled="editMode.$waiting" ng-click="editMode.$cancel()" class="btn-clear text-danger">
+                                <i class="fa fa-times" aria-hidden="true"></i>
+                            </button>
+                        </form>
+                        <div ng-show="!editMode.$visible">
+                            <span class="pointer" ng-click="editMode.$show()"><i class="fa fa-pencil" aria-hidden="true"></i>&nbsp;</span>
+
+                            <span class="pointer" ng-click="removeModal(wine.Id, $index)"><i class="fa fa-trash-o"></i></span>
+                        </div>
+                    </td>
+                </tr>
+                <tr ng-if="!wines.length">
+                    <td colspan="5" class="text-center">
+                        There are no wines to display
+                    </td>
+                </tr>
+                <tr ng-if="states.showWineForm">
+                    <td>
+                        <input type="text" class="form-control" placeholder="Name" ng-model="new.wine.Name" />
+                    </td>
+                    <td>
+                        <input type="text" class="form-control" placeholder="Colour" ng-model="new.wine.Color" />
+                    </td>
+                    <td>
+                        <input type="number" class="form-control" placeholder="Price" ng-model="new.wine.Price" />
+                    </td>
+                    <td class="text-center">
+                        <div class="checkbox">
+                            <label>
+                                <input type="checkbox" ng-model="new.wine.InStock" /> in stock
+                            </label>
+                        </div>
+                    </td>
+                    <td class="text-center">
+                        <button type="button" class="btn-clear text-success ladda-button" data-spinner-color="#5cb85c" ng-click="addWine()"
+                                loading-button data-style="zoom-out" spin="states.isAdding">
+                            <i class="fa fa-check" aria-hidden="true"></i>&nbsp;
+                        </button>
+                        <button type="button" class="btn-clear text-danger" ng-click="showWineForm(false)">
+                            <i class="fa fa-times" aria-hidden="true"></i>
+                        </button>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+        <button class="btn btn-success" ng-click="showWineForm(true)" ng-if="!states.showWineForm">Add wine</button>
+    </div>
+</div>
