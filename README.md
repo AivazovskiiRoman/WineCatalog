@@ -10,4 +10,4 @@ Web application with AngularJS and ASP.NET MVC
 
 # Preview
 
-![Wine catalog](http://aivazovskiy.com/images/wine_catalog.jpg)
+![Wine catalog](http://ikvic.com/images/wine_catalog.jpg)
